@@ -1,0 +1,1 @@
+export {VideoComponent as default} from './VideoComponent';
