@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
 export function VideoComponent({ stream, userVideo, partnerVideo }) {
   return (
