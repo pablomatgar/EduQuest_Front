@@ -33,7 +33,7 @@ export const getRouteComponent = (v: PageVisibilityEnum) => {
 
 export const routes: IRoute[] = [
   {
-    path: "/login",
+    path: "/",
     exact: false,
     component: <LoginPage />,
     visibility: PageVisibilityEnum.NOT_LOGGED_IN,

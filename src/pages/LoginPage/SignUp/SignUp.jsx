@@ -35,6 +35,7 @@ export function SignUp(props) {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const codeRef = useRef();
   const nameRef = useRef();
 
   function changeState() {
@@ -42,7 +43,8 @@ export function SignUp(props) {
   }
 
   const handleSignUp = (e) => {
-    //BASE DATOS
+    let userType = "";
+
     e.preventDefault();
     console.log("Referencia de contra: ", passwordRef.current.value);
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
@@ -50,10 +52,13 @@ export function SignUp(props) {
       return;
     }
 
+    if ((codeRef.current.value = "123456")) {
+      userType = "Teacher";
+    }
     try {
       setError("");
       setLoading(true);
-      signUp(emailRef.current.value, passwordRef.current.value);
+      signUp(emailRef.current.value, passwordRef.current.value, userType);
     } catch {
       setError("Failed to create an account");
     }
@@ -140,6 +145,21 @@ export function SignUp(props) {
                             ref={passwordConfirmRef}
                           />
                           <ErrorMessage name="passwordConfirm" />
+                        </FormControl>
+                      );
+                    }}
+                  </Field>
+                  <Field name="userType">
+                    {({ field, form }) => {
+                      return (
+                        <FormControl mt={6}>
+                          <FormLabel>Code for Teachers</FormLabel>
+                          <Input
+                            type="text"
+                            placeholder="Place your code if you're a teacher"
+                            ref={codeRef}
+                          />
+                          <ErrorMessage name="password" />
                         </FormControl>
                       );
                     }}

@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth, db } from "../../firebaseConfig";
+import { v4 as uuidv4 } from "uuid";
 import "@firebase/firestore";
 
 const AuthContext = React.createContext();
@@ -14,14 +15,14 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [loginSeleccionado, setLoginSeleccionado] = useState(true);
 
-  function signUp(email, password, name) {
+  function signUp(email, password, name, userType) {
     console.log("Estamos creando un nuevo usuario");
     return auth
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
         db.collection("users")
-          .doc("Prueba")
-          .set({ email, level: 0, name: "Victor", points: 0, quest: [] })
+          .doc(uuidv4())
+          .set({ email, level: 0, name, points: 0, quest: [], type: userType })
           .catch((e) => {
             console.log(e);
           });

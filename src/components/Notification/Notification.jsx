@@ -7,31 +7,35 @@ import {
   CloseButton,
 } from "@chakra-ui/react";
 
-import io from "socket.io-client";
 import { useAuth } from "../../Utils/Auth/index";
+import useNotification from "../../lib/hooks/useNotification";
 
-const MyAlert = (data) => {
+const MyAlert = () => {
   const [status, setStatus] = useState("success");
   const [title, setTitle] = useState("Notification!");
   const [close, setClose] = useState(false);
+  const { data } = useNotification();
 
   useEffect(() => {
+    console.log("Configurando notificacion");
     setClose(false);
     switch (data.type) {
       case "Quest":
+        console.log("La notificación es un quest!");
         setStatus("info");
         setTitle("New quest!");
         break;
 
       case "Quest completed":
-        setStatus("succes");
+        console.log("La notificación es un quest completado");
+        setStatus("success");
         setTitle(`Quest completed by: ${data.user}`);
         break;
 
       default:
         break;
     }
-  }, []);
+  }, [data]);
 
   return (
     <div>
@@ -58,25 +62,13 @@ const MyAlert = (data) => {
 };
 
 function Notification() {
-  const [data, setData] = useState({ name: "", description: "" });
-  const { currentProfile } = useAuth();
-
-  const socket = useRef();
-
-  useEffect(() => {
-    socket.current = io.connect("http://localhost:8000/", {
-      withCredentials: true,
-    });
-
-    socket.current.on("notification", (data) => {
-      //Debería cambiarlo por currentProfile[type] (?) - No recuerdo lel
-      if (currentProfile.type == data.userType) {
-        setData(data);
-      }
-    });
-  }, []);
-
-  return <MyAlert data={data} />;
+  return (
+    <>
+      <div>
+        <MyAlert />
+      </div>
+    </>
+  );
 }
 
 export default Notification;
