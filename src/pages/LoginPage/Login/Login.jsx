@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as yup from "yup";
+import socket from "../../../Utils/Socket/socket";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import {
   Box,
@@ -10,6 +11,7 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
+import { useAuth } from "../../../Utils/Auth";
 
 let schema = yup.object().shape({
   email: yup
@@ -20,8 +22,40 @@ let schema = yup.object().shape({
 });
 
 export function Login(props) {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const [error, setError] = useState([]);
+  const { login } = useAuth();
+
   function changeState() {
     props.funcion(false);
+  }
+
+  function handleLogin(e) {
+    e.preventDefault();
+    if (emailRef.current == undefined || passwordRef.current == undefined) {
+      console.log("Sign in incomplete");
+      setError([true, "Please complete the form in order to acces"]);
+    } else {
+      try {
+        login(emailRef.current.value, passwordRef.current.value);
+        console.log("Login was succesful");
+      } catch {
+        setError([true, "Error while login"]);
+        console.log("Error");
+      }
+    }
+  }
+
+  function testNotification(e) {
+    e.preventDefault();
+    socket.emit("createNotification", {
+      title: "Prueba",
+      description: "A test",
+      type: "Quest",
+      userType: "student",
+    });
+    console.log("We've emited the event");
   }
 
   return (
@@ -54,6 +88,7 @@ export function Login(props) {
                             {...field}
                             type="text"
                             placeholder="mail@mail.com"
+                            ref={emailRef}
                           />
                           <ErrorMessage name="email" />
                         </FormControl>
@@ -65,7 +100,11 @@ export function Login(props) {
                       return (
                         <FormControl mt={6} isRequired>
                           <FormLabel>Password</FormLabel>
-                          <Input type="password" placeholder="*******" />
+                          <Input
+                            type="password"
+                            placeholder="*******"
+                            ref={passwordRef}
+                          />
                           <ErrorMessage name="password" />
                         </FormControl>
                       );
@@ -91,6 +130,19 @@ export function Login(props) {
                   >
                     Sign Up
                   </Button>
+                  <Button
+                    onClick={(e) => {
+                      handleLogin(e);
+                    }}
+                    colorScheme="teal"
+                    variantColor="teal"
+                    variant="outline"
+                    width="full"
+                    mt={4}
+                  >
+                    Confirm
+                  </Button>
+                  <Button onClick={testNotification}>Test Notification</Button>
                 </Box>
               </Box>
             </Flex>

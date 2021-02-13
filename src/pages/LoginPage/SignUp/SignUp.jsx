@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import * as yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { auth } from "../../firebaseConfig";
+
 import {
   Box,
   Flex,
@@ -11,7 +11,7 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
-import { useAuth } from "../../Utils/Auth";
+import { useAuth } from "../../../Utils/Auth/index";
 
 let schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -35,6 +35,7 @@ export function SignUp(props) {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const codeRef = useRef();
   const nameRef = useRef();
 
   function changeState() {
@@ -42,7 +43,8 @@ export function SignUp(props) {
   }
 
   const handleSignUp = (e) => {
-    //BASE DATOS
+    let userType = "";
+
     e.preventDefault();
     console.log("Referencia de contra: ", passwordRef.current.value);
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
@@ -50,18 +52,13 @@ export function SignUp(props) {
       return;
     }
 
+    if ((codeRef.current.value = "123456")) {
+      userType = "Teacher";
+    }
     try {
       setError("");
       setLoading(true);
-      /*auth
-        .createUserWithEmailAndPassword(
-          emailRef.current.value,
-          passwordRef.current.value
-        )
-        .catch((e) => {
-          console.log("ERROR: ", e);
-        });*/
-      signUp(emailRef.current.value, passwordRef.current.value);
+      signUp(emailRef.current.value, passwordRef.current.value, userType);
     } catch {
       setError("Failed to create an account");
     }
@@ -79,7 +76,6 @@ export function SignUp(props) {
         return (
           <Form>
             <Flex width="full" align="center" justifyContent="center">
-              {currentUser && <h2>{JSON.stringify(currentUser)}</h2>}
               <Box
                 p={8}
                 width="600px"
@@ -149,6 +145,21 @@ export function SignUp(props) {
                             ref={passwordConfirmRef}
                           />
                           <ErrorMessage name="passwordConfirm" />
+                        </FormControl>
+                      );
+                    }}
+                  </Field>
+                  <Field name="userType">
+                    {({ field, form }) => {
+                      return (
+                        <FormControl mt={6}>
+                          <FormLabel>Code for Teachers</FormLabel>
+                          <Input
+                            type="text"
+                            placeholder="Place your code if you're a teacher"
+                            ref={codeRef}
+                          />
+                          <ErrorMessage name="password" />
                         </FormControl>
                       );
                     }}
