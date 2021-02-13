@@ -1,13 +1,12 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Login } from "./Login";
 import { SignUp } from "./SignUp";
 
 export function LoginPage() {
   const [status, setStatus] = useState(true);
   return (
-    <div>
-    { status ? <Login funcion={setStatus}/> : <SignUp funcion={setStatus}/> }
-    </div>
-  )
+    <>
+      {status ? <Login funcion={setStatus} /> : <SignUp funcion={setStatus} />}
+    </>
+  );
 }
-
