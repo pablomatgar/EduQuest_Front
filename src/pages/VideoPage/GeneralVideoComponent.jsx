@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { SideBar } from "../../components/SideBar/SideBar";
 import { VideoComponent } from "../../components/VideoComponent/VideoComponent";
-import { useSocketConnection } from "../../lib/hooks/useSocketConnection";
+import socket from "../../Utils/Socket/socket";
+import { Grid, GridItem } from "@chakra-ui/react";
+
 import Peer from "simple-peer";
 
 export function GeneralVideoComponent() {
@@ -13,27 +15,38 @@ export function GeneralVideoComponent() {
   const [callerSignal, setCallerSignal] = useState(); //Signal of the caller
   const [callAccepted, setCallAccepted] = useState(false); //Boolean that shows if the user accepted the call
 
-  const { socket } = useSocketConnection();
-
   const userVideo = useRef(); //Reference for the video
   const partnerVideo = useRef(); //Reference for the video od the other user
+  const socketRef = useRef();
 
   useEffect(() => {
-    if (socket == null) return;
+    socketRef.current = socket;
 
-    socket.on("yourID", (id) => {
+    navigator.mediaDevices //Acces to the navigator media
+      .getUserMedia({ video: true, audio: true }) //We obtain the video and audio
+      .then((stream) => {
+        //After the user has accepted the credentials..
+        setStream(stream); //We update the stream state
+        if (userVideo.current) {
+          //If our user (us) has video...
+          userVideo.current.srcObject = stream; //We stablished that the src is going to be the stream
+        }
+      });
+
+    socketRef.current.on("yourID", (id) => {
+      console.log("I've recieved my id!");
       //We suscribe to the event "yourID"
       setYourID(id); //If the event is called (from server) we're going to update the state of the id of the user
     });
-    socket.on("allUsers", (users) => {
+    socketRef.current.on("allUsers", (users) => {
       //We suscribe to the event "allUsers"
-      console.log("Tenemos los valores de los usuarios");
+      console.log("I've recieved all users ", users);
       setUsers(users); //We update the users
     });
 
-    socket.on("hey", (data) => {
+    socketRef.current.on("hey", (data) => {
       //We suscribe to the event "hey"
-      console.log("Estamos actualizando 'Receiving Call'");
+      console.log("I'm receiving a call");
       setReceivingCall(true); //We set that we have a receiving call
       setCaller(data.from); //We set who is the caller
       setCallerSignal(data.signal); //We set the caller signal
@@ -54,7 +67,7 @@ export function GeneralVideoComponent() {
     peer.on("signal", (data) => {
       //When we recieve a "signal"
       console.log("Lanzando una señal desde el peer");
-      socket.emit("callUser", {
+      socketRef.current.emit("callUser", {
         //We emmit an event (callUser) passing the id, the data and our id
         userToCall: id,
         signalData: data,
@@ -73,7 +86,7 @@ export function GeneralVideoComponent() {
 
     console.log("Recibió la llamada?: ", receivingCall);
 
-    socket.on("callAccepted", (signal) => {
+    socketRef.current.on("callAccepted", (signal) => {
       //We suscribe to the event "callAccepted"
       console.log("La señal fue aceptada");
       setCallAccepted(true); //We set that the call is accepted
@@ -95,7 +108,7 @@ export function GeneralVideoComponent() {
     //We suscribe to the signal
     peer.on("signal", (data) => {
       //We emit "acceptCall" to the other user
-      socket.emit("acceptCall", { signal: data, to: caller });
+      socketRef.current.emit("acceptCall", { signal: data, to: caller });
     });
 
     //We suscribe to the stream
@@ -107,10 +120,36 @@ export function GeneralVideoComponent() {
     peer.signal(callerSignal);
   }
 
+  let incomingCall; //Variable that will store the notification when an user send request for call
+  if (receivingCall) {
+    //if there is a recieving call
+    incomingCall = ( //We render the notification
+      <div>
+        <h1>{caller} is calling you</h1>
+        <button onClick={acceptCall}>Accept</button>
+      </div>
+    );
+  }
+
   return (
     <>
+      <Grid>
+        {Object.keys(users).map((key) => {
+          if (key === yourID) {
+            return null;
+          }
+          return (
+            <button onClick={() => callPeer(key)}>Call user! {key}</button>
+          );
+        })}
+      </Grid>
+      <Grid>{incomingCall}</Grid>
       <SideBar />
-      <VideoComponent />
+      <VideoComponent
+        userVideo={userVideo}
+        partnerVideo={partnerVideo}
+        stream={stream}
+      />
     </>
   );
 }
