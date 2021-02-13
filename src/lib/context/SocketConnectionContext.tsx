@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { Socket } from "socket.io-client";
 
-interface IContextData {
+interface ISocketContext {
   socket: Socket | null;
 }
 
-const contextData: IContextData = {
+const contextData: ISocketContext = {
   socket: null,
 };
 
