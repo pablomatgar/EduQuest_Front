@@ -9,14 +9,6 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-function LogIn() {
-  return <div></div>;
-}
-
-function SignUp() {
-  return <div></div>;
-}
-
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
