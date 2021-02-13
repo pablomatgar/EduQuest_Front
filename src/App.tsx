@@ -5,19 +5,29 @@ import { BrowserRouter } from "react-router-dom";
 import { RouteSwitchWithNav } from "./components/RouteSwitchWithNav";
 import { SocketConnectionProvider } from "./lib/context/SocketConnectionContext";
 import { routes } from "./routes";
+import LoginPage from "./pages/LoginPage/index";
+import { AuthProvider } from "./Utils/Auth";
 
 const queryClient = new QueryClient();
 
 export const App = () => (
   <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
+    <AuthProvider>
       <ChakraProvider theme={theme}>
-        <SocketConnectionProvider>
-          <React.Suspense fallback={null}>
-            <RouteSwitchWithNav routes={routes} basePath="" />
-          </React.Suspense>
-        </SocketConnectionProvider>
+        <React.Suspense fallback={null}>
+          <RouteSwitchWithNav routes={routes} basePath="" />
+          <LoginPage />
+        </React.Suspense>
       </ChakraProvider>
-    </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider theme={theme}>
+          <SocketConnectionProvider>
+            <React.Suspense fallback={null}>
+              <RouteSwitchWithNav routes={routes} basePath="" />
+            </React.Suspense>
+          </SocketConnectionProvider>
+        </ChakraProvider>
+      </QueryClientProvider>
+    </AuthProvider>
   </BrowserRouter>
 );

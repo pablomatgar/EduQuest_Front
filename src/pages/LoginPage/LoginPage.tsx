@@ -1,10 +1,12 @@
-import React from "react";
-import { Box } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Login } from "./Login";
+import { SignUp } from "./SignUp";
 
 export function LoginPage() {
+  const [status, setStatus] = useState(true);
   return (
-    <Box>
-      <h1>Login Page</h1>
-    </Box>
+    <>
+      {status ? <Login funcion={setStatus} /> : <SignUp funcion={setStatus} />}
+    </>
   );
 }
