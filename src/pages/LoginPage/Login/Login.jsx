@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import * as yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { auth } from "../../firebaseConfig";
 import {
   Box,
   Flex,
@@ -11,63 +10,41 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
-import { useAuth } from "../../Utils/Auth";
+import { useAuth } from "../../../Utils/Auth";
 
 let schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
   email: yup
     .string()
     .email("Email must be a valid email")
     .required("Email is required"),
   password: yup.string().required("Password is required"),
-  passwordConfirm: yup
-    .string()
-    .test("passwords-match", "Passwords must match", function (value) {
-      return this.parent.password === value;
-    }),
 });
 
-export function SignUp(props) {
-  const { signUp, currentUser } = useAuth();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  //References to values created by the user
+export function Login(props) {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
-  const nameRef = useRef();
+  const [error, setError] = useState([]);
+  const { login } = useAuth();
 
   function changeState() {
-    props.funcion(true); //Volvemos al Login
+    props.funcion(false);
   }
 
-  const handleSignUp = (e) => {
-    //BASE DATOS
+  function handleLogin(e) {
     e.preventDefault();
-    console.log("Referencia de contra: ", passwordRef.current.value);
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      setError("Passwords do not match");
-      return;
+    if (emailRef.current == undefined || passwordRef.current == undefined) {
+      console.log("Sign in incomplete");
+      setError([true, "Please complete the form in order to acces"]);
+    } else {
+      try {
+        login(emailRef.current.value, passwordRef.current.value);
+        console.log("Login was succesful");
+      } catch {
+        setError([true, "Error while login"]);
+        console.log("Error");
+      }
     }
-
-    try {
-      setError("");
-      setLoading(true);
-      /*auth
-        .createUserWithEmailAndPassword(
-          emailRef.current.value,
-          passwordRef.current.value
-        )
-        .catch((e) => {
-          console.log("ERROR: ", e);
-        });*/
-      signUp(emailRef.current.value, passwordRef.current.value);
-    } catch {
-      setError("Failed to create an account");
-    }
-
-    setLoading(false);
-  };
+  }
 
   return (
     <Formik
@@ -79,7 +56,6 @@ export function SignUp(props) {
         return (
           <Form>
             <Flex width="full" align="center" justifyContent="center">
-              {currentUser && <h2>{JSON.stringify(currentUser)}</h2>}
               <Box
                 p={8}
                 width="600px"
@@ -88,25 +64,9 @@ export function SignUp(props) {
                 boxShadow="lg"
               >
                 <Box textAlign="center">
-                  <Heading>Sign Up</Heading>
+                  <Heading>Login</Heading>
                 </Box>
                 <Box my={4} textAlign="left">
-                  <Field name="name">
-                    {({ field, form }) => {
-                      return (
-                        <FormControl mt={6}>
-                          <FormLabel>Name</FormLabel>
-                          <Input
-                            {...field}
-                            type="text"
-                            placeholder="John Smith"
-                            ref={nameRef}
-                          />
-                          <ErrorMessage name="name" />
-                        </FormControl>
-                      );
-                    }}
-                  </Field>
                   <Field name="email">
                     {({ field, form }) => {
                       return (
@@ -126,7 +86,7 @@ export function SignUp(props) {
                   <Field name="password">
                     {({ field, form }) => {
                       return (
-                        <FormControl mt={6}>
+                        <FormControl mt={6} isRequired>
                           <FormLabel>Password</FormLabel>
                           <Input
                             type="password"
@@ -138,25 +98,18 @@ export function SignUp(props) {
                       );
                     }}
                   </Field>
-                  <Field name="passwordConfirm">
-                    {({ field, form }) => {
-                      return (
-                        <FormControl mt={6}>
-                          <FormLabel>Repeat password</FormLabel>
-                          <Input
-                            type="password"
-                            placeholder="*******"
-                            ref={passwordConfirmRef}
-                          />
-                          <ErrorMessage name="passwordConfirm" />
-                        </FormControl>
-                      );
-                    }}
-                  </Field>
-                  {error && <h2>{error}</h2>}
+                  <Button
+                    type="submit"
+                    colorScheme="teal"
+                    variantColor="teal"
+                    variant="outline"
+                    width="full"
+                    mt={4}
+                  >
+                    Sign In
+                  </Button>
                   <Button
                     onClick={changeState}
-                    type="submit"
                     colorScheme="teal"
                     variantColor="teal"
                     variant="outline"
@@ -166,9 +119,9 @@ export function SignUp(props) {
                     Sign Up
                   </Button>
                   <Button
-                    disabled={loading}
-                    onClick={handleSignUp}
-                    type="submit"
+                    onClick={(e) => {
+                      handleLogin(e);
+                    }}
                     colorScheme="teal"
                     variantColor="teal"
                     variant="outline"

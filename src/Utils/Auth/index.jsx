@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth, db } from "../../firebaseConfig";
-import app from "../../firebaseConfig";
 import "@firebase/firestore";
 
 const AuthContext = React.createContext();
@@ -11,6 +10,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [currentProfile, setCurrentProfile] = useState();
   const [loading, setLoading] = useState(true);
   const [loginSeleccionado, setLoginSeleccionado] = useState(true);
 
@@ -35,9 +35,14 @@ export function AuthProvider({ children }) {
     return auth.signInWithEmailAndPassword(email, password);
   }
 
+  function logout() {
+    return auth.signOut();
+  }
+
   useEffect(() => {
     const unsuscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
+      //SetCurrentProfile => Fecth from server the whole profile based on the user name and then update state
       console.log("Usuario: ", user);
       setLoading(false);
     });
@@ -45,7 +50,7 @@ export function AuthProvider({ children }) {
     return unsuscribe;
   }, []);
 
-  const value = { currentUser, signUp, login };
+  const value = { currentUser, signUp, login, currentProfile };
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}
