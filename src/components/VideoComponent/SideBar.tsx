@@ -46,7 +46,7 @@ export function SideBar() {
     }
 
     return (
-        <>
+        <Box height="0">
             <IconButton
                 m={20}
                 colorScheme="teal"
@@ -127,6 +127,6 @@ export function SideBar() {
                     </DrawerContent>
                 </DrawerOverlay>
             </Drawer>
-        </>
+        </Box>
     );
 }

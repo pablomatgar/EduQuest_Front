@@ -1,1 +1,1 @@
-export {VideoComponent as default} from './VideoComponent';
+export {GeneralVideoComponent as default} from './GeneralVideoComponent';
