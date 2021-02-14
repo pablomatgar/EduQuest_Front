@@ -96,13 +96,13 @@ export function VideoComponent({
               centerContent
             >
               <VideoBox video={partnerVideo} />
+              <Notification />
             </Flex>
           ) : (
             <></>
           )}
 
           <VideoBox video={userVideo} />
-          <Notification />
         </Flex>
       ) : (
         <></>

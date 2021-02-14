@@ -16,6 +16,8 @@ import {
 } from "@chakra-ui/react";
 
 import Peer from "simple-peer";
+import FormNoti from "./FormNotification/FormNoti";
+import { useUser } from "../../lib/context/UserProfileContext";
 
 export function GeneralVideoComponent() {
   const [yourID, setYourID] = useState(""); //Id of the user
@@ -30,7 +32,11 @@ export function GeneralVideoComponent() {
   const partnerVideo = useRef(); //Reference for the video od the other user
   const socketRef = useRef();
 
+  const [user] = useUser();
+  let { name, points, level, quest, type } = user.user;
+
   useEffect(() => {
+    console.log("Tipo de usuario: ", type);
     socketRef.current = socket;
 
     navigator.mediaDevices //Acces to the navigator media
@@ -63,18 +69,6 @@ export function GeneralVideoComponent() {
       setCallerSignal(data.signal); //We set the caller signal
     });
   }, []);
-
-  function testNotification(e) {
-    e.preventDefault();
-    socket.emit("createNotification", {
-      title: "Prueba",
-      description: "A test",
-      type: "Quest",
-      userType: "STUDENT",
-      userToCall: caller,
-    });
-    console.log("We've emited the event");
-  }
 
   function callPeer(id) {
     setCaller(id);
@@ -160,7 +154,7 @@ export function GeneralVideoComponent() {
   }
 
   return (
-    <Grid>
+    <>
       <Flex direction="row" align="center">
         <Container>
           {Object.keys(users).map((key) => {
@@ -176,13 +170,20 @@ export function GeneralVideoComponent() {
 
       <Container>{incomingCall}</Container>
       <SideBar />
+
       <VideoComponent
         userVideo={userVideo}
         partnerVideo={partnerVideo}
         stream={stream}
         callAccepted={callAccepted}
       />
-      <Button onClick={testNotification}>Test Notificatiom</Button>
-    </Grid>
+      {type == "STUDENT" ? (
+        <></>
+      ) : (
+        <Container style={{ width: "10vw" }}>
+          <FormNoti caller={caller} />
+        </Container>
+      )}
+    </>
   );
 }

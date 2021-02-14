@@ -32,6 +32,7 @@ const MyAlert = () => {
         break;
 
       default:
+        console.log("No logramos identificar la notificación", data.type);
         break;
     }
   }, [data]);
@@ -41,10 +42,7 @@ const MyAlert = () => {
       {close ? (
         <></>
       ) : (
-        <Alert
-          status={status}
-          style={{ maxWidth: "30vw", justifyContent: "center" }}
-        >
+        <Alert status={status}>
           <AlertIcon />
           <AlertTitle mr={2}>{title}</AlertTitle>
           <AlertDescription>{data.description}</AlertDescription>

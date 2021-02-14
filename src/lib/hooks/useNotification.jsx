@@ -10,7 +10,7 @@ function useNotification() {
     socketRef.current = socket;
 
     socketRef.current.on("notification", (data) => {
-      console.log("We've detected the event");
+      console.log("We've detected the event", data);
 
       //Debería cambiarlo por currentProfile[type] (?) - No recuerdo (?)
       if ("STUDENT" == data.userType) {
