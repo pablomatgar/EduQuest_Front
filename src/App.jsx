@@ -6,6 +6,7 @@ import { RouteSwitchWithNav } from "./components/RouteSwitchWithNav";
 import { routes } from "./routes";
 import { AuthProvider } from "./Utils/Auth";
 import { Socket } from "react-socket-io";
+import { UserProvider } from "./lib/context/UserProfileContext";
 
 const queryClient = new QueryClient();
 
@@ -15,13 +16,15 @@ const options = { transports: ["websocket"], withCredentials: true };
 export const App = () => (
   <BrowserRouter>
     <AuthProvider>
-      <ChakraProvider theme={theme}>
-        <Socket uri={uri} options={options}>
-          <React.Suspense fallback={null}>
-            <RouteSwitchWithNav routes={routes} basePath="" />
-          </React.Suspense>
-        </Socket>
-      </ChakraProvider>
+      <UserProvider>
+        <ChakraProvider theme={theme}>
+          <Socket uri={uri} options={options}>
+            <React.Suspense fallback={null}>
+              <RouteSwitchWithNav routes={routes} basePath="" />
+            </React.Suspense>
+          </Socket>
+        </ChakraProvider>
+      </UserProvider>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider theme={theme}></ChakraProvider>
       </QueryClientProvider>

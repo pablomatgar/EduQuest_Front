@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as yup from "yup";
-import socket from "../../../Utils/Socket/socket";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import {
   Box,
@@ -45,17 +45,6 @@ export function Login(props) {
         console.log("Error");
       }
     }
-  }
-
-  function testNotification(e) {
-    e.preventDefault();
-    socket.emit("createNotification", {
-      title: "Prueba",
-      description: "A test",
-      type: "Quest",
-      userType: "student",
-    });
-    console.log("We've emited the event");
   }
 
   return (
@@ -142,7 +131,6 @@ export function Login(props) {
                   >
                     Confirm
                   </Button>
-                  <Button onClick={testNotification}>Test Notification</Button>
                 </Box>
               </Box>
             </Flex>

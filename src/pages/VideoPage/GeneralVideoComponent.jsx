@@ -2,7 +2,18 @@ import React, { useState, useRef, useEffect } from "react";
 import { SideBar } from "../../components/SideBar/SideBar";
 import { VideoComponent } from "../../components/VideoComponent/VideoComponent";
 import socket from "../../Utils/Socket/socket";
-import { Grid, GridItem } from "@chakra-ui/react";
+import {
+  Grid,
+  GridItem,
+  Flex,
+  Container,
+  Button,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton,
+} from "@chakra-ui/react";
 
 import Peer from "simple-peer";
 
@@ -14,6 +25,7 @@ export function GeneralVideoComponent() {
   const [caller, setCaller] = useState(""); //User that call you
   const [callerSignal, setCallerSignal] = useState(); //Signal of the caller
   const [callAccepted, setCallAccepted] = useState(false); //Boolean that shows if the user accepted the call
+  const [otherUserID, setOtherUserID] = useState(false); //Boolean that shows if the user accepted the call
 
   const userVideo = useRef(); //Reference for the video
   const partnerVideo = useRef(); //Reference for the video od the other user
@@ -54,6 +66,7 @@ export function GeneralVideoComponent() {
   }, []);
 
   function callPeer(id) {
+    setOtherUserID(id);
     //Function that runs when the user wants to connect to a another user
     const peer = new Peer({
       //We create a peer (us)
@@ -124,32 +137,39 @@ export function GeneralVideoComponent() {
   if (receivingCall) {
     //if there is a recieving call
     incomingCall = ( //We render the notification
-      <div>
-        <h1>{caller} is calling you</h1>
-        <button onClick={acceptCall}>Accept</button>
-      </div>
+      <Alert status="info">
+        <AlertIcon />
+        <AlertTitle mr={2}>{}</AlertTitle>
+        <AlertDescription>{caller} is calling you!</AlertDescription>
+        <Button onClick={acceptCall}>Accept</Button>
+        <CloseButton position="absolute" right="8px" top="8px" />
+      </Alert>
     );
   }
 
   return (
-    <>
-      <Grid>
-        {Object.keys(users).map((key) => {
-          if (key === yourID) {
-            return null;
-          }
-          return (
-            <button onClick={() => callPeer(key)}>Call user! {key}</button>
-          );
-        })}
-      </Grid>
-      <Grid>{incomingCall}</Grid>
+    <Grid>
+      <Flex direction="row" align="center">
+        <Container>
+          {Object.keys(users).map((key) => {
+            if (key === yourID) {
+              return null;
+            }
+            return (
+              <Button onClick={() => callPeer(key)}>Call user! {key}</Button>
+            );
+          })}
+        </Container>
+      </Flex>
+
+      <Container>{incomingCall}</Container>
       <SideBar />
       <VideoComponent
         userVideo={userVideo}
         partnerVideo={partnerVideo}
         stream={stream}
+        callAccepted={callAccepted}
       />
-    </>
+    </Grid>
   );
 }

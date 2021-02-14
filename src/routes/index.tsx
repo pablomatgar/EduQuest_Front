@@ -36,7 +36,7 @@ export const routes: IRoute[] = [
   {
     path: "/",
     exact: false,
-    component: <VideoPage />,
+    component: <LoginPage />,
     visibility: PageVisibilityEnum.NOT_LOGGED_IN,
     nav: null,
     footer: null,
