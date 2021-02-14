@@ -1,8 +1,12 @@
 import React from 'react'
 import { Box, Button, Center, Flex, Square, Text } from "@chakra-ui/react"
 import { Redirect } from 'react-router-dom'
+import { useUser } from "../../lib/context/UserProfileContext";
 
 export default function ProfileTeacherComponent() {
+    const [user] = useUser();
+
+    let { name, points, level, quest, type } = user.user;
     return (
         <Box w="100vw" h="100vh" padding="20px"
             bgGradient="radial(#181f33, #101625)" color="white">
@@ -31,7 +35,7 @@ export default function ProfileTeacherComponent() {
                         <Box w="100%" h="100%" bg="#071609" boxShadow="0px 0px 4px #7EFF7B"
                             border="2px" borderColor="#7EFF7B" borderRadius="15px"
                             padding="10px 20px" fontSize="4vh">
-                            <Text color="#7EFF7B">NAME | Jane Smith</Text>
+                            <Text color="#7EFF7B">NAME | {name}</Text>
                             <br/>
                             <Text as="u" color="#7EFF7B">EMAIL</Text>
                             <Text>jsmith@outlook.com</Text>
