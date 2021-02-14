@@ -15,8 +15,8 @@ const options = { transports: ["websocket"], withCredentials: true };
 
 export const App = () => (
   <BrowserRouter>
-    <AuthProvider>
-      <UserProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <ChakraProvider theme={theme}>
           <Socket uri={uri} options={options}>
             <React.Suspense fallback={null}>
@@ -24,10 +24,7 @@ export const App = () => (
             </React.Suspense>
           </Socket>
         </ChakraProvider>
-      </UserProvider>
-      <QueryClientProvider client={queryClient}>
-        <ChakraProvider theme={theme}></ChakraProvider>
-      </QueryClientProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   </BrowserRouter>
 );

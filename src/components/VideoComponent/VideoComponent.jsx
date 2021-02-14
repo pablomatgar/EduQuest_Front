@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import {
   Box,
   Container,
@@ -39,6 +40,9 @@ const VideoBox = ({ video, student }) => {
   if (type == "STUDENT") {
     boxSize = "xs";
   }
+
+
+
 
   return (
     <Box maxW={boxSize} borderWidth="10px" borderRadius="lg" overflow="hidden">
