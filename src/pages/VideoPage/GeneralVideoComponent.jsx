@@ -181,7 +181,7 @@ export function GeneralVideoComponent() {
       {type == "STUDENT" ? (
         <></>
       ) : (
-        <Container style={{ width: "10vw" }}>
+        <Container style={{ width: "100vw" }}>
           <FormNoti caller={caller} />
         </Container>
       )}

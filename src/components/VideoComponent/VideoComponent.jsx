@@ -31,7 +31,7 @@ const VideoBox = ({ video }) => {
   }
 
   return (
-    <Box maxW={boxSize} borderWidth="10px" borderRadius="lg" overflow="hidden">
+    <Box maxW={boxSize} borderWidth="2px" borderRadius="lg" overflow="hidden">
       <video playsInline muted ref={video} autoPlay />;
       <Box p="6">
         <Box d="flex" alignItems="baseline">
@@ -40,7 +40,7 @@ const VideoBox = ({ video }) => {
           </Badge>
 
           <Box
-            color="gray.500"
+            color="gray.400"
             fontWeight="semibold"
             letterSpacing="wide"
             textTransform="uppercase"
@@ -76,7 +76,7 @@ export function VideoComponent({
   student,
 }) {
   return (
-    <Box bg="gray.100">
+    <Box bgGradient="radial(#2A313A, #14181E)">
       {stream ? (
         <Flex
           h="100vh"
@@ -89,9 +89,6 @@ export function VideoComponent({
               h="50vh"
               direction="column"
               justify="space-between"
-              bg="green.100"
-              border="4px"
-              borderColor="gray.900"
               borderRadius="15px"
               centerContent
             >

@@ -176,77 +176,99 @@ export function SideBar() {
     return (
         <Box height="0">
             <IconButton
-                m={20}
+                mt={10} ml={10}
+                bg="#3FDDD3"
                 colorScheme="teal"
+                color="black"
                 isRound
                 aria-label="Open Sidebar"
                 icon={<AiOutlineMenu />}
-                size="lg"
+                w="10vh" h="10vh"
                 onClick={onOpen}
             />
             <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
                 <DrawerOverlay p={0} m={0}>
-                    <DrawerContent p={0} m={0}>
-                        <DrawerBody p={0} m={0}>
-                            <Grid p={0} m={0} bg="teal" height="100%" alignItems="center" templateRows="repeat(5, 1fr)"
+                    <DrawerContent p={0} m={0} bg="#00000000">
+                        <DrawerBody p={0} m={0} borderRadius="0px 30px 30px 0px" w="10vw">
+                            <Grid p={0} m={0} bg="#3FDDD3" height="100%" alignItems="center" templateRows="repeat(5, 1fr)"
                                 templateColumns="repeat(1, 1fr)">
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={onClose}
                                             colorScheme="blackAlpha"
+                                            color="black"
                                             isRound
                                             aria-label="Close Sidebar"
                                             icon={<AiOutlineMenu />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={showNotifications}
+                                            bg="#FFE48670"
                                             colorScheme="yellow"
+                                            color="#644E00"
+                                            border="4px"
+                                            borderColor="#FFE486"
                                             isRound
                                             aria-label="Notifications"
                                             icon={<BiDotsHorizontalRounded />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={changeStateMicrophone}
                                             colorScheme="blackAlpha"
+                                            color="black"
+                                            border="4px"
+                                            borderColor="black"
                                             isRound
                                             aria-label={microEnabled ? "Disable Microphone" : "Enable Microphone"}
                                             icon={microEnabled ? <FaMicrophone /> : <FaMicrophoneSlash />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={changeStateCamera}
                                             colorScheme="blackAlpha"
+                                            color="black"
+                                            border="4px"
+                                            borderColor="black"
                                             isRound
                                             aria-label={camaraEnabled ? "Disable Camera" : "Enable Camera"}
                                             icon={camaraEnabled ? <MdVideocam /> : <MdVideocamOff />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={exitCall}
+                                            bg="#EB000070"
                                             colorScheme="red"
+                                            color="#EB0000"
+                                            border="4px"
+                                            borderColor="#EB0000"
                                             isRound
                                             aria-label="Exit call"
                                             icon={<GrClose />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
@@ -257,18 +279,18 @@ export function SideBar() {
             </Drawer>
             <Modal onClose={close} isOpen={opened} isCentered size="2xl">
                 <ModalOverlay />
-                <ModalContent bg="orange" >
+                <ModalContent bg="gray.700" border="2px" borderColor="#3FDDD3" color="white">
                     <ModalHeader textAlign="center">Quest List</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Grid bg="orange"
+                        <Grid bg="#3FDDD3" color="black"
                             templateColumns="repeat(2, 1fr)">
                             <GridItem w="50%">
                                 <Center>
                                     {ReadApi}
                                 </Center>
                             </GridItem>
-                            <GridItem w="50%">
+                            <GridItem >
                                 <Center>
                                     <div>
                                         {isDataSelected ? printData() : printError()}
