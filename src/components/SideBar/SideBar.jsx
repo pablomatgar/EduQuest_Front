@@ -23,12 +23,14 @@ import {
 
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa"
 import { MdVideocam, MdVideocamOff } from "react-icons/md"
+import { ImUser } from "react-icons/im"
 import { GrClose } from "react-icons/gr"
 import { AiOutlineMenu } from "react-icons/ai"
 import { BiDotsHorizontalRounded } from "react-icons/bi"
 import FetchClient from '../../Utils/Interceptor/FetchClient';
 import useQuest from "../../lib/hooks/useQuest"
 import { Redirect } from 'react-router-dom';
+import { useUser } from "../../lib/context/UserProfileContext";
 
 
 export function SideBar() {
@@ -65,9 +67,15 @@ export function SideBar() {
 
     const [dataSelected, setDataSelected] = useState([]);
 
+    const [success, setSuccess] = useState(false);
+
+    const [user] = useUser();
+
+    let { name, points, level, quest, type } = user.user;
+
 
     //Estos datos se leen de la DB
-    
+
     const quests = [{
         "id": "11223344",
         "name": "Quest 1",
@@ -92,8 +100,8 @@ export function SideBar() {
             "type": "Sth else"
         }
     }];
-    
-    
+
+
 
     function close() {
         setOpened(false);
@@ -117,11 +125,23 @@ export function SideBar() {
 
     function exitCall() {
         //Exit call
-        <Redirect to="/" />
+        return (<Redirect to="/" />);
+    }
+
+    function openProfile() {
+        //Open profile
+        if(type == "STUDENT"){
+            return (<Redirect to="/profile" />); 
+        }
+        else{
+            return (<Redirect to="/profileTeacher" />); 
+        }
     }
 
     function showNotifications() {
-        open(); //if user is student
+        if(type == "STUDENT"){
+            open(); 
+        }
     }
 
 
@@ -133,25 +153,25 @@ export function SideBar() {
     function printData() {
         return (
             <>
-            {dataSelected != null  && dataSelected.reward != null ?<><br></br>
-                <Heading as="h1" size="lg">Quest Name: {dataSelected.name}</Heading><br></br>
-                <Heading as="h4" size="md">Description: {dataSelected.description}</Heading>
-                <Heading as="h5" size="sm">Room: {dataSelected.roomId}</Heading>
-                <Heading as="h5" size="sm">Creator: {dataSelected.creatorId}</Heading><br></br>
-                <Divider /><br></br>
-                <Heading as="h4" size="md">Reward</Heading>
-                <Heading as="h5" size="sm">Description: {dataSelected.reward.description}</Heading>
-                <Heading as="h5" size="sm">Points: {dataSelected.reward.points}</Heading>
-                <Heading as="h5" size="sm">Type: {dataSelected.reward.type}</Heading><br></br>
-                <Button /*onClick="sendNotificationFinished()"*/>Mark as finished</Button><br></br><br></br></>:
-                <>{printError()}</>
-            }
+                {dataSelected != null && dataSelected.reward != null ? <><br></br>
+                    <Heading as="h1" size="lg">Quest Name: {dataSelected.name}</Heading><br></br>
+                    <Heading as="h4" size="md">Description: {dataSelected.description}</Heading>
+                    <Heading as="h5" size="sm">Room: {dataSelected.roomId}</Heading>
+                    <Heading as="h5" size="sm">Creator: {dataSelected.creatorId}</Heading><br></br>
+                    <Divider /><br></br>
+                    <Heading as="h4" size="md">Reward</Heading>
+                    <Heading as="h5" size="sm">Description: {dataSelected.reward.description}</Heading>
+                    <Heading as="h5" size="sm">Points: {dataSelected.reward.points}</Heading>
+                    <Heading as="h5" size="sm">Type: {dataSelected.reward.type}</Heading><br></br>
+                    <Button /*onClick="sendNotificationFinished()"*/>Mark as finished</Button><br></br><br></br></> :
+                    <>{printError()}</>
+                }
             </>
         );
     }
 
     return (
-<Box height="0">
+        <Box height="0">
             <IconButton
                 mt={10} ml={10}
                 bg="#3FDDD3"
@@ -167,7 +187,7 @@ export function SideBar() {
                 <DrawerOverlay p={0} m={0}>
                     <DrawerContent p={0} m={0} bg="#00000000">
                         <DrawerBody p={0} m={0} borderRadius="0px 30px 30px 0px" w="10vw">
-                            <Grid p={0} m={0} bg="#3FDDD3" height="100%" alignItems="center" templateRows="repeat(5, 1fr)"
+                            <Grid p={0} m={0} bg="#3FDDD3" height="100%" alignItems="center" templateRows="repeat(6, 1fr)"
                                 templateColumns="repeat(1, 1fr)">
                                 <Box w="100%" h="50%">
                                     <Center>
@@ -235,6 +255,22 @@ export function SideBar() {
                                 <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
+                                            onClick={openProfile}
+                                            colorScheme="whiteAlpha"
+                                            color="black"
+                                            border="4px"
+                                            borderColor="white"
+                                            isRound
+                                            aria-label={camaraEnabled ? "Disable Camera" : "Enable Camera"}
+                                            icon={<ImUser />}
+                                            w="10vh"
+                                            h="10vh"
+                                        />
+                                    </Center>
+                                </Box>
+                                <Box w="100%" h="50%">
+                                    <Center>
+                                        <IconButton
                                             onClick={exitCall}
                                             bg="#EB000070"
                                             colorScheme="red"
@@ -264,18 +300,18 @@ export function SideBar() {
                             templateColumns="repeat(2, 1fr)">
                             <GridItem w="50%">
                                 <Center>
-                                {quests != null ? <div>{quests.map((d) => {
+                                    {quests != null ? <div>{quests.map((d) => {
                                         return (
                                             <Box as="button" w="100%" onClick={() => display(d)}>
                                                 <br></br><Heading as="Heading" size="lg">{d.name}</Heading><Heading as="h4" size="md">{d.description}</Heading><br></br><Divider />
                                             </Box>)
-                                    })}</div>:<></>}
+                                    })}</div> : <></>}
                                 </Center>
                             </GridItem>
                             <GridItem >
                                 <Center>
                                     <div>
-                                    {dataSelected!=null ? printData() : <></>}
+                                        {dataSelected != null ? printData() : <></>}
                                     </div>
                                 </Center>
                             </GridItem>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Button, Center, Flex, Square, Text } from "@chakra-ui/react"
+import { Redirect } from 'react-router-dom'
 
 export default function ProfileTeacherComponent() {
     return (
@@ -11,7 +12,8 @@ export default function ProfileTeacherComponent() {
                 <Button width="60px" mb="20px" lineHeight="1.5"
                     border="2px" borderColor="#ff48b6" borderRadius="10px"
                     boxShadow="0px 0px 4px #ff48b6"
-                    bg="#570044" _hover={{bg: "#570044"}}  _active={{bg: "#2d0023"}}>
+                    bg="#570044" _hover={{bg: "#570044"}}  _active={{bg: "#2d0023"}} 
+                    onClick={() => (<Redirect to="/videoRoom" />)}>
                     Back
                 </Button>
 

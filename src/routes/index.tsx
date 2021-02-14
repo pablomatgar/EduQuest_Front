@@ -1,5 +1,7 @@
 import React from "react";
 import { Route as PublicRoute } from "react-router-dom";
+import ProfileStudentComponent from "../components/ProfileStudentComponent/ProfileStudentComponent";
+import ProfileTeacherComponent from "../components/ProfileTeacherComponent/ProfileTeacherComponent";
 
 const LoginPage = React.lazy(() => import("../pages/LoginPage"));
 const VideoPage = React.lazy(() => import("../pages/VideoPage"));
@@ -66,6 +68,22 @@ export const routes: IRoute[] = [
     path: "/rooms",
     exact: false,
     component: <RoomsPage />,
+    visibility: PageVisibilityEnum.LOGGED_IN,
+    nav: null,
+    footer: null,
+  },
+  {
+    path: "/profile",
+    exact: false,
+    component: <ProfileStudentComponent />,
+    visibility: PageVisibilityEnum.LOGGED_IN,
+    nav: null,
+    footer: null,
+  },
+  {
+    path: "/profileTeacher",
+    exact: false,
+    component: <ProfileTeacherComponent />,
     visibility: PageVisibilityEnum.LOGGED_IN,
     nav: null,
     footer: null,
