@@ -4,6 +4,7 @@ import { Route as PublicRoute } from "react-router-dom";
 const LoginPage = React.lazy(() => import("../pages/LoginPage"));
 const VideoPage = React.lazy(() => import("../pages/VideoPage"));
 const NewRoomPage = React.lazy(() => import("../pages/NewRoomPage"));
+const RoomsPage = React.lazy(() => import("../pages/RoomsPage"));
 
 export enum PageVisibilityEnum {
   PUBLIC = "PUBLIC",
@@ -58,6 +59,14 @@ export const routes: IRoute[] = [
     exact: false,
     component: <NewRoomPage />,
     visibility: PageVisibilityEnum.TEACHER_ONLY,
+    nav: null,
+    footer: null,
+  },
+  {
+    path: "/rooms",
+    exact: false,
+    component: <RoomsPage />,
+    visibility: PageVisibilityEnum.LOGGED_IN,
     nav: null,
     footer: null,
   },
