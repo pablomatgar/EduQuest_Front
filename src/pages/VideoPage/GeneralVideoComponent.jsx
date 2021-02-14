@@ -35,6 +35,15 @@ export function GeneralVideoComponent() {
   const [user] = useUser();
   let { name, points, level, quest, type } = user.user;
 
+  function testNotification(data) {
+    socketRef.current.emit("createNotification", {
+      title: data.title,
+      description: data.description,
+      type: data.type,
+      userType: data.userType,
+      userToCall: caller,
+    });
+  }
 
   useEffect(() => {
     console.log("Tipo de usuario: ", type);
@@ -56,6 +65,11 @@ export function GeneralVideoComponent() {
       //We suscribe to the event "yourID"
       setYourID(id); //If the event is called (from server) we're going to update the state of the id of the user
     });
+
+    socketRef.current.on("notification", (data) => {
+      console.log("I've recieved a NOTIFICATION");
+    });
+
     socketRef.current.on("allUsers", (users) => {
       //We suscribe to the event "allUsers"
       console.log("I've recieved all users ", users);
@@ -178,7 +192,8 @@ export function GeneralVideoComponent() {
         stream={stream}
         callAccepted={callAccepted}
       />
-      {type == "STUDENT" ? (
+
+      {type == "STUDENT" || !callAccepted ? (
         <></>
       ) : (
         <Container style={{ width: "100vw" }}>

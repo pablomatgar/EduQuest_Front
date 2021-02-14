@@ -31,6 +31,18 @@ const MyAlert = () => {
         setTitle(`Quest completed by: ${data.user}`);
         break;
 
+      case "Item":
+        console.log("La notificación es un item!");
+        setStatus("success");
+        setTitle(`You have a new item!: ${data.item}`);
+        break;
+
+      case "Points":
+        console.log("La notificación es un Points!");
+        setStatus("success");
+        setTitle(`You've gained points!: ${data.points}`);
+        break;
+
       default:
         console.log("No logramos identificar la notificación", data.type);
         break;
