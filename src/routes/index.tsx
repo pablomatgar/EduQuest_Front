@@ -46,6 +46,14 @@ export const routes: IRoute[] = [
     footer: null,
   },
   {
+    path: "/login",
+    exact: false,
+    component: <LoginPage />,
+    visibility: PageVisibilityEnum.NOT_LOGGED_IN,
+    nav: null,
+    footer: null,
+  },
+  {
     path: "/rooms/new",
     exact: false,
     component: <NewRoomPage />,
