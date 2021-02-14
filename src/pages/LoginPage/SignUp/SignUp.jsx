@@ -43,7 +43,7 @@ export function SignUp(props) {
   }
 
   const handleSignUp = (e) => {
-    let userType = "";
+    let userType = "STUDENT";
 
     e.preventDefault();
     console.log("Referencia de contra: ", passwordRef.current.value);
@@ -53,12 +53,17 @@ export function SignUp(props) {
     }
 
     if ((codeRef.current.value = "123456")) {
-      userType = "Teacher";
+      userType = "TEACHER";
     }
     try {
       setError("");
       setLoading(true);
-      signUp(emailRef.current.value, passwordRef.current.value, userType);
+      signUp(
+        emailRef.current.value,
+        passwordRef.current.value,
+        nameRef.current.value,
+        userType
+      );
     } catch {
       setError("Failed to create an account");
     }

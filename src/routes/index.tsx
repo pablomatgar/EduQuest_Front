@@ -2,11 +2,14 @@ import React from "react";
 import { Route as PublicRoute } from "react-router-dom";
 
 const LoginPage = React.lazy(() => import("../pages/LoginPage"));
+const VideoPage = React.lazy(() => import("../pages/VideoPage"));
+const NewRoomPage = React.lazy(() => import("../pages/NewRoomPage"));
 
 export enum PageVisibilityEnum {
   PUBLIC = "PUBLIC",
   NOT_LOGGED_IN = "NOT_LOGGED_IN",
   LOGGED_IN = "LOGGED_IN",
+  TEACHER_ONLY = "TEACHER_ONLY",
 }
 
 export interface IRoute {
@@ -28,15 +31,33 @@ export const getRouteComponent = (v: PageVisibilityEnum) => {
     case PageVisibilityEnum.NOT_LOGGED_IN:
       // TODO: Create a component that's only for not logged in users.
       return PublicRoute;
+    case PageVisibilityEnum.TEACHER_ONLY:
+      return PublicRoute;
   }
 };
 
 export const routes: IRoute[] = [
   {
     path: "/",
+    exact: true,
+    component: <VideoPage />,
+    visibility: PageVisibilityEnum.NOT_LOGGED_IN,
+    nav: null,
+    footer: null,
+  },
+  {
+    path: "/login",
     exact: false,
     component: <LoginPage />,
     visibility: PageVisibilityEnum.NOT_LOGGED_IN,
+    nav: null,
+    footer: null,
+  },
+  {
+    path: "/rooms/new",
+    exact: false,
+    component: <NewRoomPage />,
+    visibility: PageVisibilityEnum.TEACHER_ONLY,
     nav: null,
     footer: null,
   },

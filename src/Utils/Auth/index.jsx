@@ -18,13 +18,21 @@ export function AuthProvider({ children }) {
   function signUp(email, password, name, userType) {
     console.log("Estamos creando un nuevo usuario");
     const userID = uuidv4();
+    console.log(userID);
     localStorage.setItem("userID", userID);
     return auth
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
         db.collection("users")
           .doc(userID)
-          .set({ email, level: 0, name, points: 0, quest: [], type: userType })
+          .set({
+            email,
+            level: 0,
+            name: name,
+            points: 0,
+            quest: [],
+            type: userType,
+          })
           .catch((e) => {
             console.log(e);
           });

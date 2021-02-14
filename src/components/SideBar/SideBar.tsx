@@ -1,151 +1,284 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from 'react';
 import {
-  Drawer,
-  DrawerBody,
-  useDisclosure,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  Button,
-  IconButton,
-  Grid,
-  Box,
-  Center,
+    Drawer,
+    DrawerBody,
+    useDisclosure,
+    DrawerOverlay,
+    DrawerContent,
+    IconButton,
+    Grid,
+    Box,
+    Center,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    GridItem,
+    Divider,
+    Button
 } from "@chakra-ui/react";
-import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
-import { MdVideocam, MdVideocamOff } from "react-icons/md";
-import { GrClose } from "react-icons/gr";
-import { AiOutlineMenu } from "react-icons/ai";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
+
+import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa"
+import { MdVideocam, MdVideocamOff } from "react-icons/md"
+import { GrClose } from "react-icons/gr"
+import { AiOutlineMenu } from "react-icons/ai"
+import { BiDotsHorizontalRounded } from "react-icons/bi"
 
 export function SideBar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [microEnabled, setMicroEnabled] = useState(false);
+    function ReadApi() {
+        const [quests, setQuests] = useState<any[]>([]);
 
-  const [camaraEnabled, setCamaraEnabled] = useState(false);
+        useEffect(() => {
+        fetch('http://localhost:8000/api/quests?take=10&skip=0')
+        .then(response => {console.log(response)})
+        .then(data => console.log(data))},[]);
 
-  function changeStateMicrophone() {
-    //Disable/enable microphone
-    {
-      microEnabled ? setMicroEnabled(false) : setMicroEnabled(true);
+        return <div>{quests.map((d) => {
+            return (
+                <Box as="button" w="100%" onClick={() => display(d)}>
+                    <h1>{d.name}</h1><h2>{d.description}</h2><Divider />
+                </Box>)
+        })}
+        </div>
     }
-  }
+/*
+    const data : {
+        id: string;
+        name: string;
+        description: string;
+        creatorId: string;
+        roomId: string;
+        reward: {
+            description: string;
+            points: string;
+            type: string;
+        };
+    }[]  = ReadApi();
+*/
+    //console.log(data);
 
-  function changeStateCamera() {
-    //Disable/enable camera
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const [opened, setOpened] = useState(false);
+
+    const [microEnabled, setMicroEnabled] = useState(false);
+
+    const [camaraEnabled, setCamaraEnabled] = useState(false);
+
+    const [isDataSelected, setDataSelected] = useState(false);
+
+    var dataSelected: {
+        id: string,
+        name: string;
+        description: string;
+        creatorId: string;
+        roomId: string;
+        reward: {
+            description: string;
+            points: string;
+            type: string;
+        };
+    };
+
+    //Estos datos se leen de la DB
+    /*
+    const data = [{
+        "name": "Quest 1",
+        "description": "This quest...",
+        "creatorId": "123",
+        "roomId": "123",
+        "reward": {
+            "description": "Amazing reward",
+            "points": "10",
+            "type": "Sth"
+        }
+    },
     {
-      camaraEnabled ? setCamaraEnabled(false) : setCamaraEnabled(true);
+        "name": "Quest 2",
+        "description": "This another quest...",
+        "creatorId": "321",
+        "roomId": "321",
+        "reward": {
+            "description": "Cool reward",
+            "points": "100",
+            "type": "Sth else"
+        }
+    }];
+    */
+
+    function close() {
+        setOpened(false);
     }
-  }
 
-  function exitCall() {
-    //Exit call
-  }
+    function open() {
+        setOpened(true);
+    }
 
-  function showNotifications() {
-    //Show notifications
-  }
+    function changeStateMicrophone() {
+        //Disable/enable microphone
+        { microEnabled ? setMicroEnabled(false) : setMicroEnabled(true) }
+    }
 
-  return (
-    <Box height="0">
-      <IconButton
-        m={20}
-        colorScheme="teal"
-        isRound
-        aria-label="Open Sidebar"
-        icon={<AiOutlineMenu />}
-        size="lg"
-        onClick={onOpen}
-      />
-      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-        <DrawerOverlay p={0} m={0}>
-          <DrawerContent p={0} m={0}>
-            <DrawerBody p={0} m={0}>
-              <Grid
-                p={0}
-                m={0}
-                bg="teal"
-                height="100%"
-                alignItems="center"
-                templateRows="repeat(5, 1fr)"
-                templateColumns="repeat(1, 1fr)"
-              >
-                <Box w="100%" h="20%">
-                  <Center>
-                    <IconButton
-                      onClick={onClose}
-                      colorScheme="blackAlpha"
-                      isRound
-                      aria-label="Close Sidebar"
-                      icon={<AiOutlineMenu />}
-                      size="lg"
-                    />
-                  </Center>
-                </Box>
-                <Box w="100%" h="20%">
-                  <Center>
-                    <IconButton
-                      onClick={showNotifications}
-                      colorScheme="yellow"
-                      isRound
-                      aria-label="Notifications"
-                      icon={<BiDotsHorizontalRounded />}
-                      size="lg"
-                    />
-                  </Center>
-                </Box>
-                <Box w="100%" h="20%">
-                  <Center>
-                    <IconButton
-                      onClick={changeStateMicrophone}
-                      colorScheme="blackAlpha"
-                      isRound
-                      aria-label={
-                        microEnabled
-                          ? "Disable Microphone"
-                          : "Enable Microphone"
-                      }
-                      icon={
-                        microEnabled ? <FaMicrophone /> : <FaMicrophoneSlash />
-                      }
-                      size="lg"
-                    />
-                  </Center>
-                </Box>
-                <Box w="100%" h="20%">
-                  <Center>
-                    <IconButton
-                      onClick={changeStateCamera}
-                      colorScheme="blackAlpha"
-                      isRound
-                      aria-label={
-                        camaraEnabled ? "Disable Camera" : "Enable Camera"
-                      }
-                      icon={camaraEnabled ? <MdVideocam /> : <MdVideocamOff />}
-                      size="lg"
-                    />
-                  </Center>
-                </Box>
-                <Box w="100%" h="20%">
-                  <Center>
-                    <IconButton
-                      onClick={exitCall}
-                      colorScheme="red"
-                      isRound
-                      aria-label="Exit call"
-                      icon={<GrClose />}
-                      size="lg"
-                    />
-                  </Center>
-                </Box>
-              </Grid>
-            </DrawerBody>
-          </DrawerContent>
-        </DrawerOverlay>
-      </Drawer>
-    </Box>
-  );
+    function changeStateCamera() {
+        //Disable/enable camera
+        { camaraEnabled ? setCamaraEnabled(false) : setCamaraEnabled(true) }
+    }
+
+    function exitCall() {
+        //Exit call
+    }
+
+    function showNotifications() {
+        open(); //if user is student
+    }
+
+    function display(d: {
+        id: string,
+        name: string;
+        description: string;
+        creatorId: string;
+        roomId: string;
+        reward: {
+            description: string;
+            points: string;
+            type: string;
+        };
+    }) {
+        dataSelected = d;
+        setDataSelected(true);
+    }
+
+    function printError() {
+        return (
+            <h1>No Quest Selected</h1>);
+    }
+
+    function printData() {
+        return (
+            <>
+                <h1>Quest Name: {dataSelected.name}</h1>
+                <h2>Description: {dataSelected.description}</h2>
+                <h3>Room: {dataSelected.roomId}</h3>
+                <h3>Creator: {dataSelected.creatorId}</h3>
+                <Divider />
+                <h2>Reward</h2>
+                <h3>Description: {dataSelected.reward.description}</h3>
+                <h3>Points: {dataSelected.reward.points}</h3>
+                <h3>Type: {dataSelected.reward.type}</h3>
+                <Button /*onClick="sendNotificationFinished()"*/>Mark as finished</Button>
+            </>
+        );
+    }
+
+    return (
+        <Box height="0">
+            <IconButton
+                m={20}
+                colorScheme="teal"
+                isRound
+                aria-label="Open Sidebar"
+                icon={<AiOutlineMenu />}
+                size="lg"
+                onClick={onOpen}
+            />
+            <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+                <DrawerOverlay p={0} m={0}>
+                    <DrawerContent p={0} m={0}>
+                        <DrawerBody p={0} m={0}>
+                            <Grid p={0} m={0} bg="teal" height="100%" alignItems="center" templateRows="repeat(5, 1fr)"
+                                templateColumns="repeat(1, 1fr)">
+                                <Box w="100%" h="20%">
+                                    <Center>
+                                        <IconButton
+                                            onClick={onClose}
+                                            colorScheme="blackAlpha"
+                                            isRound
+                                            aria-label="Close Sidebar"
+                                            icon={<AiOutlineMenu />}
+                                            size="lg"
+                                        />
+                                    </Center>
+                                </Box>
+                                <Box w="100%" h="20%">
+                                    <Center>
+                                        <IconButton
+                                            onClick={showNotifications}
+                                            colorScheme="yellow"
+                                            isRound
+                                            aria-label="Notifications"
+                                            icon={<BiDotsHorizontalRounded />}
+                                            size="lg"
+                                        />
+                                    </Center>
+                                </Box>
+                                <Box w="100%" h="20%">
+                                    <Center>
+                                        <IconButton
+                                            onClick={changeStateMicrophone}
+                                            colorScheme="blackAlpha"
+                                            isRound
+                                            aria-label={microEnabled ? "Disable Microphone" : "Enable Microphone"}
+                                            icon={microEnabled ? <FaMicrophone /> : <FaMicrophoneSlash />}
+                                            size="lg"
+                                        />
+                                    </Center>
+                                </Box>
+                                <Box w="100%" h="20%">
+                                    <Center>
+                                        <IconButton
+                                            onClick={changeStateCamera}
+                                            colorScheme="blackAlpha"
+                                            isRound
+                                            aria-label={camaraEnabled ? "Disable Camera" : "Enable Camera"}
+                                            icon={camaraEnabled ? <MdVideocam /> : <MdVideocamOff />}
+                                            size="lg"
+                                        />
+                                    </Center>
+                                </Box>
+                                <Box w="100%" h="20%">
+                                    <Center>
+                                        <IconButton
+                                            onClick={exitCall}
+                                            colorScheme="red"
+                                            isRound
+                                            aria-label="Exit call"
+                                            icon={<GrClose />}
+                                            size="lg"
+                                        />
+                                    </Center>
+                                </Box>
+                            </Grid>
+                        </DrawerBody>
+                    </DrawerContent>
+                </DrawerOverlay>
+            </Drawer>
+            <Modal onClose={close} isOpen={opened} isCentered size="2xl">
+                <ModalOverlay />
+                <ModalContent bg="orange" >
+                    <ModalHeader textAlign="center">Quest List</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Grid bg="orange"
+                            templateColumns="repeat(2, 1fr)">
+                            <GridItem w="50%">
+                                <Center>
+                                    {ReadApi}
+                                </Center>
+                            </GridItem>
+                            <GridItem w="50%">
+                                <Center>
+                                    <div>
+                                        {isDataSelected ? printData() : printError()}
+                                    </div>
+                                </Center>
+                            </GridItem>
+                        </Grid>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+        </Box>
+    );
 }

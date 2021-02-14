@@ -7,7 +7,6 @@ import {
   CloseButton,
 } from "@chakra-ui/react";
 
-import { useAuth } from "../../Utils/Auth/index";
 import useNotification from "../../lib/hooks/useNotification";
 
 const MyAlert = () => {

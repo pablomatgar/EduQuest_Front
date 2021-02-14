@@ -13,7 +13,7 @@ function useNotification() {
       console.log("We've detected the event");
 
       //Debería cambiarlo por currentProfile[type] (?) - No recuerdo (?)
-      if ("student" == data.userType) {
+      if ("STUDENT" == data.userType) {
         console.log("We've updated the data", data);
         setData(data);
       }
