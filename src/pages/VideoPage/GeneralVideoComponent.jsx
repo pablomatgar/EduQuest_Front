@@ -25,7 +25,6 @@ export function GeneralVideoComponent() {
   const [caller, setCaller] = useState(""); //User that call you
   const [callerSignal, setCallerSignal] = useState(); //Signal of the caller
   const [callAccepted, setCallAccepted] = useState(false); //Boolean that shows if the user accepted the call
-  const [otherUserID, setOtherUserID] = useState(false); //Boolean that shows if the user accepted the call
 
   const userVideo = useRef(); //Reference for the video
   const partnerVideo = useRef(); //Reference for the video od the other user
@@ -65,8 +64,20 @@ export function GeneralVideoComponent() {
     });
   }, []);
 
+  function testNotification(e) {
+    e.preventDefault();
+    socket.emit("createNotification", {
+      title: "Prueba",
+      description: "A test",
+      type: "Quest",
+      userType: "STUDENT",
+      userToCall: caller,
+    });
+    console.log("We've emited the event");
+  }
+
   function callPeer(id) {
-    setOtherUserID(id);
+    setCaller(id);
     //Function that runs when the user wants to connect to a another user
     const peer = new Peer({
       //We create a peer (us)
@@ -99,11 +110,12 @@ export function GeneralVideoComponent() {
 
     console.log("Recibió la llamada?: ", receivingCall);
 
-    socketRef.current.on("callAccepted", (signal) => {
+    socketRef.current.on("callAccepted", (data) => {
       //We suscribe to the event "callAccepted"
       console.log("La señal fue aceptada");
+
       setCallAccepted(true); //We set that the call is accepted
-      peer.signal(signal); //We send a signal
+      peer.signal(data.signal); //We send a signal
     });
   }
 
@@ -170,6 +182,7 @@ export function GeneralVideoComponent() {
         stream={stream}
         callAccepted={callAccepted}
       />
+      <Button onClick={testNotification}>Test Notificatiom</Button>
     </Grid>
   );
 }

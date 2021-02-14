@@ -1,5 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
+
 import {
   Box,
   Container,
@@ -12,7 +12,7 @@ import { useUser } from "../../lib/context/UserProfileContext";
 import Notification from "../../components/Notification/Notification";
 import socket from "../../Utils/Socket/socket";
 
-const VideoBox = ({ video, student }) => {
+const VideoBox = ({ video }) => {
   const [user] = useUser();
   let { name, points, level, quest, type } = user.user;
 
@@ -24,25 +24,11 @@ const VideoBox = ({ video, student }) => {
     motto: "Journey Before Destination",
   };
 
-  function testNotification(e) {
-    e.preventDefault();
-    socket.emit("createNotification", {
-      title: "Prueba",
-      description: "A test",
-      type: "Quest",
-      userType: "STUDENT",
-    });
-    console.log("We've emited the event");
-  }
-
   let boxSize = "m";
 
   if (type == "STUDENT") {
     boxSize = "xs";
   }
-
-
-
 
   return (
     <Box maxW={boxSize} borderWidth="10px" borderRadius="lg" overflow="hidden">
@@ -77,7 +63,6 @@ const VideoBox = ({ video, student }) => {
         </Box>
 
         <Box>{propertyStudent.motto}</Box>
-        <Button onClick={testNotification}>Test Notification</Button>
       </Box>
     </Box>
   );
