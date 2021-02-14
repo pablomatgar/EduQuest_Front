@@ -14,17 +14,16 @@ const options = { transports: ["websocket"], withCredentials: true };
 
 export const App = () => (
   <BrowserRouter>
-    <AuthProvider>
-      <ChakraProvider theme={theme}>
-        <Socket uri={uri} options={options}>
-          <React.Suspense fallback={null}>
-            <RouteSwitchWithNav routes={routes} basePath="" />
-          </React.Suspense>
-        </Socket>
-      </ChakraProvider>
-      <QueryClientProvider client={queryClient}>
-        <ChakraProvider theme={theme}></ChakraProvider>
-      </QueryClientProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <ChakraProvider theme={theme}>
+          <Socket uri={uri} options={options}>
+            <React.Suspense fallback={null}>
+              <RouteSwitchWithNav routes={routes} basePath="" />
+            </React.Suspense>
+          </Socket>
+        </ChakraProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   </BrowserRouter>
 );

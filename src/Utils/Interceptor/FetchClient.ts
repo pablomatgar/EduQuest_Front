@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const fetchClient = () => {
-  const defaultOptions = {
-    baseURL: process.env.REACT_APP_SERVER_UR,
+  const defaultOptions: AxiosRequestConfig = {
+    baseURL: process.env.REACT_APP_SERVER_URL,
     method: "get",
     headers: {
       "Content-Type": "application/json",
