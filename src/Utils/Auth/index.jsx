@@ -43,7 +43,19 @@ export function AuthProvider({ children }) {
   }
 
   function login(email, password) {
-    return auth.signInWithEmailAndPassword(email, password);
+    return auth.signInWithEmailAndPassword(email, password).then(async () => {
+      const snapshot = await db
+        .collection("users")
+        .where("email", "==", email)
+        .get();
+      if (!snapshot.empty) {
+        snapshot.forEach((user) => {
+          localStorage.setItem("userID", user.id);
+        });
+        return true;
+      }
+      throw new Error("Error logging in!");
+    });
   }
 
   function logout() {
