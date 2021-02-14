@@ -7,6 +7,7 @@ import {
     DrawerContent,
     IconButton,
     Grid,
+    Heading,
     Box,
     Center,
     Modal,
@@ -33,7 +34,6 @@ import { Redirect } from 'react-router-dom';
 export function SideBar() {
 
     //const {quests} = useQuest();
-
 
     function display(d) {
         setDataSelected(d);
@@ -65,6 +65,7 @@ export function SideBar() {
 
     const [dataSelected, setDataSelected] = useState([]);
 
+
     //Estos datos se leen de la DB
     
     const quests = [{
@@ -92,7 +93,8 @@ export function SideBar() {
         }
     }];
     
-    console.log(quests)
+    
+
     function close() {
         setOpened(false);
     }
@@ -125,113 +127,125 @@ export function SideBar() {
 
     function printError() {
         return (
-            <h1>No Quest Selected</h1>);
+            <Heading as="h1" size="lg">No Quest Selected</Heading>);
     }
 
     function printData() {
         return (
             <>
-            {dataSelected != null  && dataSelected.reward != null ?<>
-                <h1>Quest Id: {dataSelected.id}</h1>
-                <h1>Quest Name: {dataSelected.name}</h1>
-                <h2>Description: {dataSelected.description}</h2>
-                <h3>Room: {dataSelected.roomId}</h3>
-                <h3>Creator: {dataSelected.creatorId}</h3>
-                <Divider />
-                <h2>Reward</h2>
-                <h3>Description: {dataSelected.reward.description}</h3>
-                <h3>Points: {dataSelected.reward.points}</h3>
-                <h3>Type: {dataSelected.reward.type}</h3>
-                <Button /*onClick="sendNotificationFinished()"*/>Mark as finished</Button></>:
-                <><h1>Quest Id: -</h1>
-                <h1>Quest Name: -</h1>
-                <h2>Description: -</h2>
-                <h3>Room: -</h3>
-                <h3>Creator: -</h3>
-                <Divider />
-                <h2>Reward</h2>
-                <h3>Description: -</h3>
-                <h3>Points: -</h3>
-                <h3>Type: -</h3></>
+            {dataSelected != null  && dataSelected.reward != null ?<><br></br>
+                <Heading as="h1" size="lg">Quest Name: {dataSelected.name}</Heading><br></br>
+                <Heading as="h4" size="md">Description: {dataSelected.description}</Heading>
+                <Heading as="h5" size="sm">Room: {dataSelected.roomId}</Heading>
+                <Heading as="h5" size="sm">Creator: {dataSelected.creatorId}</Heading><br></br>
+                <Divider /><br></br>
+                <Heading as="h4" size="md">Reward</Heading>
+                <Heading as="h5" size="sm">Description: {dataSelected.reward.description}</Heading>
+                <Heading as="h5" size="sm">Points: {dataSelected.reward.points}</Heading>
+                <Heading as="h5" size="sm">Type: {dataSelected.reward.type}</Heading><br></br>
+                <Button /*onClick="sendNotificationFinished()"*/>Mark as finished</Button><br></br><br></br></>:
+                <>{printError()}</>
             }
             </>
         );
     }
 
     return (
-        <Box height="0">
+<Box height="0">
             <IconButton
-                m={20}
+                mt={10} ml={10}
+                bg="#3FDDD3"
                 colorScheme="teal"
+                color="black"
                 isRound
                 aria-label="Open Sidebar"
                 icon={<AiOutlineMenu />}
-                size="lg"
+                w="10vh" h="10vh"
                 onClick={onOpen}
             />
             <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
                 <DrawerOverlay p={0} m={0}>
-                    <DrawerContent p={0} m={0}>
-                        <DrawerBody p={0} m={0}>
-                            <Grid p={0} m={0} bg="teal" height="100%" alignItems="center" templateRows="repeat(5, 1fr)"
+                    <DrawerContent p={0} m={0} bg="#00000000">
+                        <DrawerBody p={0} m={0} borderRadius="0px 30px 30px 0px" w="10vw">
+                            <Grid p={0} m={0} bg="#3FDDD3" height="100%" alignItems="center" templateRows="repeat(5, 1fr)"
                                 templateColumns="repeat(1, 1fr)">
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={onClose}
                                             colorScheme="blackAlpha"
+                                            color="black"
                                             isRound
                                             aria-label="Close Sidebar"
                                             icon={<AiOutlineMenu />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={showNotifications}
+                                            bg="#FFE48670"
                                             colorScheme="yellow"
+                                            color="#644E00"
+                                            border="4px"
+                                            borderColor="#FFE486"
                                             isRound
                                             aria-label="Notifications"
                                             icon={<BiDotsHorizontalRounded />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={changeStateMicrophone}
                                             colorScheme="blackAlpha"
+                                            color="black"
+                                            border="4px"
+                                            borderColor="black"
                                             isRound
                                             aria-label={microEnabled ? "Disable Microphone" : "Enable Microphone"}
                                             icon={microEnabled ? <FaMicrophone /> : <FaMicrophoneSlash />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={changeStateCamera}
                                             colorScheme="blackAlpha"
+                                            color="black"
+                                            border="4px"
+                                            borderColor="black"
                                             isRound
                                             aria-label={camaraEnabled ? "Disable Camera" : "Enable Camera"}
                                             icon={camaraEnabled ? <MdVideocam /> : <MdVideocamOff />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
-                                <Box w="100%" h="20%">
+                                <Box w="100%" h="50%">
                                     <Center>
                                         <IconButton
                                             onClick={exitCall}
+                                            bg="#EB000070"
                                             colorScheme="red"
+                                            color="#EB0000"
+                                            border="4px"
+                                            borderColor="#EB0000"
                                             isRound
                                             aria-label="Exit call"
                                             icon={<GrClose />}
-                                            size="lg"
+                                            w="10vh"
+                                            h="10vh"
                                         />
                                     </Center>
                                 </Box>
@@ -242,27 +256,26 @@ export function SideBar() {
             </Drawer>
             <Modal onClose={close} isOpen={opened} isCentered size="2xl">
                 <ModalOverlay />
-                <ModalContent bg="orange" >
+                <ModalContent bg="gray.700" border="2px" borderColor="#3FDDD3" color="white">
                     <ModalHeader textAlign="center">Quest List</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Grid bg="orange"
+                        <Grid bg="#3FDDD3" color="black"
                             templateColumns="repeat(2, 1fr)">
                             <GridItem w="50%">
                                 <Center>
-                                    {quests != null ? <div>{quests.map((d) => {
+                                {quests != null ? <div>{quests.map((d) => {
                                         return (
                                             <Box as="button" w="100%" onClick={() => display(d)}>
-                                                <h1>{d.name}</h1><h2>{d.description}</h2><Divider />
+                                                <br></br><Heading as="Heading" size="lg">{d.name}</Heading><Heading as="h4" size="md">{d.description}</Heading><br></br><Divider />
                                             </Box>)
-                                    })}
-                                    </div>:<></>}
+                                    })}</div>:<></>}
                                 </Center>
                             </GridItem>
-                            <GridItem w="50%">
+                            <GridItem >
                                 <Center>
                                     <div>
-                                        {dataSelected!=null ? printData() : printError()}
+                                    {dataSelected!=null ? printData() : <></>}
                                     </div>
                                 </Center>
                             </GridItem>
