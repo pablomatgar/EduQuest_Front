@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Flex, Square, Text } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Square, Text } from "@chakra-ui/react"
 
 export default function ProfileStudentComponent() {
     return (
@@ -18,24 +18,24 @@ export default function ProfileStudentComponent() {
                 <Flex w="100%" justify="space-between">
 
                     {/*Profile picture*/}
-                    <Square size="30vh" bg="#515151" boxShadow="0px 0px 4px #66e3ff"
+                    <Square size="30vh" bg="#0C0F14" boxShadow="0px 0px 4px #66e3ff"
                         border="2px" borderColor="#66E3FF" borderRadius="15px">
-                        :)
+                        <Center><Text>No picture available</Text></Center>
                     </Square>
 
                     {/*Student information*/}
                     <Box w="100%" h="30vh" ml="20px" bg="#0C0F14" boxShadow="0px 0px 4px #66e3ff"
                         border="2px" borderColor="#66E3FF" borderRadius="10px"
                         padding="10px 20px" fontSize="5vh">
-                        <Text float="left" color="#66E3FF">NAME | Student Name</Text>
-                        <Text float="right" >GRADE | #</Text>
+                        <Text float="left" color="#66E3FF">NAME | John Doe</Text>
+                        <Text float="right" >GRADE | 4</Text>
                         <br/>
-                        <Text float="left">POINTS | ####</Text>
-                        <Text float="right">LEVEL | #</Text>
+                        <Text float="left">POINTS | 326</Text>
+                        <Text float="right">LEVEL | 13</Text>
                         <br/>
-                        <Text>EMAIL | student@student.edu</Text>
+                        <Text>EMAIL | johndoe@gmail.com</Text>
                     </Box>
-                    
+
                 </Flex>
                 
                 <Flex w="100%" h="100%" justify="space-between" mt="20px">
@@ -45,7 +45,10 @@ export default function ProfileStudentComponent() {
                         border="2px" borderColor="#66E3FF" borderRadius="10px"
                         padding="10px 20px" fontSize="5vh">
                         <Text as="u" color="#66E3FF">CLASSES</Text>
-                        <Text>Student's classes go here</Text>
+                        <Text bg="#ffffff12" padding="5px">Math</Text>
+                        <Text padding="5px">History II</Text>
+                        <Text bg="#ffffff12" padding="5px">Physics C</Text>
+                        <Text padding="5px">Writing Class</Text>
                     </Box>
 
                     {/*Quests*/}
@@ -53,7 +56,10 @@ export default function ProfileStudentComponent() {
                         border="2px" borderColor="#66E3FF" borderRadius="10px"
                         padding="10px 20px" fontSize="5vh">
                         <Text as="u" color="#66E3FF">QUESTS</Text>
-                        <Text>Student's quests go here</Text>
+                        <Text bg="#ffffff12" padding="5px">Complete 5 problems</Text>
+                        <Text padding="5px">Discuss the reading material with a classmate</Text>
+                        <Text bg="#ffffff12" padding="5px">Do the challenge problem</Text>
+                        <Text padding="5px">Write a summary of the chapter</Text>
                     </Box>
 
                 </Flex>

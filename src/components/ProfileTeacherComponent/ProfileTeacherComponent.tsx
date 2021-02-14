@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Flex, Square, Text } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Square, Text } from "@chakra-ui/react"
 
 export default function ProfileTeacherComponent() {
     return (
@@ -20,22 +20,23 @@ export default function ProfileTeacherComponent() {
                     <Flex w="30%" direction="column" align="center" mr="20px">
                         
                         {/*Profile picture*/}
-                        <Square size="15vw" mb="20px" bg="#515151" boxShadow="0px 0px 4px #ddffb2"
+                        <Square size="15vw" mb="20px" bg="#071609" boxShadow="0px 0px 4px #ddffb2"
                             border="2px" borderColor="#7EFF7B" borderRadius="15px">
-                            :)
+                            <Center><Text>No Picture Available</Text></Center>
                         </Square>
 
                         {/*Teacher information*/}
                         <Box w="100%" h="100%" bg="#071609" boxShadow="0px 0px 4px #7EFF7B"
                             border="2px" borderColor="#7EFF7B" borderRadius="15px"
                             padding="10px 20px" fontSize="4vh">
-                            <Text color="#7EFF7B">NAME | Teacher Name</Text>
+                            <Text color="#7EFF7B">NAME | Jane Smith</Text>
                             <br/>
                             <Text as="u" color="#7EFF7B">EMAIL</Text>
-                            <Text>teacher@teacher.edu</Text>
+                            <Text>jsmith@outlook.com</Text>
                             <br/>
                             <Text as="u" color="#7EFF7B">CLASSES</Text>
-                            <Text>Teacher's classes go here</Text>
+                            <Text bg="#ffffff12" padding="5px">History I</Text>
+                            <Text padding="5px">History II</Text>
                         </Box>
 
                     </Flex>
@@ -45,15 +46,24 @@ export default function ProfileTeacherComponent() {
                             border="2px" borderColor="#7EFF7B" borderRadius="15px"
                             padding="10px 20px" fontSize="5vh">
                         <Text as="u" color="#7EFF7B">STUDENTS</Text>
-                        <Text>Teacher's students go here</Text>
+                        <Text bg="#ffffff12" padding="5px">Bob Adams</Text>
+                            <Text padding="5px">Mary Burke</Text>
+                            <Text bg="#ffffff12" padding="5px">James Collins</Text>
+                            <Text padding="5px">John Doe</Text>
+                            <Text bg="#ffffff12" padding="5px">Susan Evans</Text>
+                            <Text padding="5px">Emma Flynn</Text>
                     </Box>
                 
                     {/*Quests*/}
                     <Box w="35%" h="100%" bg="#071609" boxShadow="0px 0px 4px #7EFF7B"
                             border="2px" borderColor="#7EFF7B" borderRadius="15px"
-                            padding="10px 20px" fontSize="5vh">
-                        <Text as="u" color="#7EFF7B">QUESTS</Text>
-                        <Text>Teacher's quests go here</Text>
+                            padding="10px 20px" fontSize="4.5vh">
+                        <Text as="u" color="#7EFF7B" fontSize="5vh">QUESTS</Text>
+                        <Text bg="#ffffff12" padding="5px">Discuss the reading material with a classmate</Text>
+                        <Text padding="5px">Write about a section</Text>
+                        <Text bg="#ffffff12"padding="5px">Ask a question</Text>
+                        <Text padding="5px">Write three facts about this figure</Text>
+                        <Text bg="#ffffff12"padding="5px">Write three facts about this event</Text>
                     </Box>
 
                 </Flex>
