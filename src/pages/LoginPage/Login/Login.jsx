@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Redirect } from "react-router-dom";
 import * as yup from "yup";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -10,6 +11,7 @@ import {
   FormLabel,
   Input,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { useAuth } from "../../../Utils/Auth";
 
@@ -24,8 +26,10 @@ let schema = yup.object().shape({
 export function Login(props) {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState([]);
   const { login } = useAuth();
+  const toast = useToast();
 
   function changeState() {
     props.funcion(false);
@@ -39,6 +43,12 @@ export function Login(props) {
     } else {
       try {
         login(emailRef.current.value, passwordRef.current.value);
+        toast({
+          title: "Login success!",
+          description: "You've logged in succesfully!",
+          status: "success",
+        });
+        setSuccess(true);
         console.log("Login was succesful");
       } catch {
         setError([true, "Error while login"]);
@@ -56,6 +66,7 @@ export function Login(props) {
       {(formPropts) => {
         return (
           <Form>
+            {success && <Redirect to="/" />}
             <Flex width="full" align="center" justifyContent="center">
               <Box
                 p={8}
