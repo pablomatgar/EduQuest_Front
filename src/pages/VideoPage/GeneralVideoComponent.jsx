@@ -35,6 +35,7 @@ export function GeneralVideoComponent() {
   const [user] = useUser();
   let { name, points, level, quest, type } = user.user;
 
+
   useEffect(() => {
     console.log("Tipo de usuario: ", type);
     socketRef.current = socket;

@@ -11,15 +11,17 @@ import FetchClient from "../../Utils/Interceptor/FetchClient";
 const UserContext = React.createContext(undefined);
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({name: "", email: "", level: "", points: 0, quests: []});
   const [montado, setMontado] = useState();
 
   useEffect(() => {
     const url = "http://localhost:8000/api/me";
     FetchClient.get(url)
       .then((res) => {
+        if(res.data!=null){
         setUser(res.data);
         console.log("Hemos obtenido al usuario: ", user);
+        }
       })
       .catch((err) => {
         console.error(err);

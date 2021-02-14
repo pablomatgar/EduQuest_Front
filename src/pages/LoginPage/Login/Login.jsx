@@ -66,7 +66,7 @@ export function Login(props) {
       {(formPropts) => {
         return (
           <Form>
-            {success && <Redirect to="/" />}
+            {success && <Redirect to="/videoRoom" />}
             <Flex width="full" align="center" justifyContent="center">
               <Box
                 p={8}
