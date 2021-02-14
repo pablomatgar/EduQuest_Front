@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import * as yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Redirect } from "react-router-dom";
 
 import {
   Box,
@@ -29,6 +30,7 @@ let schema = yup.object().shape({
 
 export function SignUp(props) {
   const { signUp, currentUser } = useAuth();
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   //References to values created by the user
@@ -64,6 +66,7 @@ export function SignUp(props) {
         nameRef.current.value,
         userType
       );
+      setSuccess(true);
     } catch {
       setError("Failed to create an account");
     }
@@ -80,6 +83,7 @@ export function SignUp(props) {
       {(formPropts) => {
         return (
           <Form>
+            {success && <Redirect to="/videoRoom" />}
             <Flex width="full" align="center" justifyContent="center">
               <Box
                 p={8}
