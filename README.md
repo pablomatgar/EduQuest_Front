@@ -2,7 +2,7 @@
 
 The frontend of EduQuest, an education challenge's project developed at TreeHacks 2021, the prestigious hackathon organised by Stanford University (United States).
 
-The backend of EduQuest is available [here]().
+The backend of EduQuest is available [here](https://github.com/pablomatgar/EduQuest_Back).
 
 ### Inspiration
 
